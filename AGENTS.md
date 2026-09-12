@@ -6,6 +6,10 @@
 - The current task is establishing an experimental emulator. Internal matter topology is deferred; a replaceable source-boundary model is the initial direction.
 - Read `README.md` and `docs/architecture.md` before changing the engine architecture.
 
+## Language
+
+- Design the entire system in English: interface copy, accessibility labels, errors, code comments, documentation, and examples.
+
 ## Research discipline
 
 - Distinguish inherited paper assumptions, newly proposed rules, numerical approximations, and measured outcomes.

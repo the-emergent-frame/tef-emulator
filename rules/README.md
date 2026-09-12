@@ -1,6 +1,6 @@
 # Candidate rules
 
-No physical evolution rules are implemented yet.
+Implemented scaffold: [source-channels-v0.1](source-channels-v0.1/README.md). Its independent channels, phase increments, and dimensionless transport weight are candidate assumptions, with no physical energy transfer law assigned.
 
 Each proposed rule set should record:
 

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>TEF Emulator · Single-source rollout</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="TEF Emulator home"><span class="brand-mark">✳</span><strong>TEF <span>EMULATOR</span></strong></a>
+    <span class="top-caption">THE EMERGENT FRAME <span class="divider">/</span> COMPUTATIONAL LAB</span>
+    <span class="version"><i></i> REFERENCE ENGINE · 0.1</span>
+  </header>
+  <main class="workspace">
+    <aside class="setup panel">
+      <div class="eyebrow">EXPERIMENT 0001</div>
+      <h1>One source.<br>Space unfolds.</h1>
+      <p class="intro">A persistent source.<br>A history built from local events.</p>
+      <div class="source-card"><span class="source-symbol">H<span>SOURCE</span></span><div><strong>Hydrogen proxy</strong><small>Source birth as a boundary</small></div></div>
+      <form id="config-form">
+        <label for="channels">Channels <span>angular samples</span></label>
+        <select id="channels" name="channels"><option value="64">64</option><option value="128">128</option><option value="256" selected>256</option><option value="512">512</option><option value="1024">1,024</option></select>
+        <label for="events">Local updates</label>
+        <select id="events" name="events"><option value="4096">4,096</option><option value="16384">16,384</option><option value="32768" selected>32,768</option><option value="65536">65,536</option><option value="131072">131,072</option></select>
+        <label for="scheduler">Event scheduling</label>
+        <select id="scheduler" name="scheduler"><option value="balanced">Balanced round-robin</option><option value="seeded">Seeded random interleaving</option></select>
+        <div class="paired"><div><label for="phase-steps">Updates / turn</label><input id="phase-steps" name="phase_steps" type="number" min="2" max="4096" value="32" required></div><div><label for="seed">Random seed</label><input id="seed" name="seed" type="number" min="0" max="4294967295" value="42" required></div></div>
+        <button class="primary" id="generate" type="submit"><span>Generate run</span><span>↗</span></button>
+      </form>
+      <div class="rule-note"><span class="tiny-label">CANDIDATE RULE</span><p>Independent channels carry equal transport weights. History persists; weight moves with the frontier.</p><code>source-channels-v0.1</code></div>
+      <details><summary>Assumptions & open questions</summary><p>3D isotropy is an observer convention. Phase advance and weight transfer are proposed rules. Matter formation, quantum interference, and physical energy release remain open; the 10¹⁹ energy scale is not yet modeled.</p></details>
+    </aside>
+    <section class="observation panel" aria-label="Experiment observation">
+      <div class="stage-header"><div class="tabs" role="group" aria-label="Observation view"><button class="active" id="view-space" aria-pressed="true">Spatial view</button><button id="view-causal" aria-pressed="false">Causal view</button></div><div class="stage-actions"><button id="home-camera" title="Reset camera" aria-label="Reset camera">⌖</button><button id="export" disabled>Export ↓</button><button id="import">Import ↑</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
+      <div class="stage" id="stage">
+        <canvas id="universe" aria-label="Interactive 3D rollout view; select an event in the causal view to inspect its parent"></canvas>
+        <div class="stage-label"><span class="tiny-label" id="view-label">SOURCE-CENTERED OBSERVER</span><div id="stage-state">Preparing experiment</div></div>
+        <div class="coordinate-note" id="coordinate-note">Isotropic 3D mapping · radius encodes local depth</div>
+        <div id="loading" class="loading" hidden><span class="spinner"></span><span>Rust is generating the causal history…</span></div>
+        <div class="stage-empty" id="empty"><span class="empty-orbit"></span><p>Before source birth</p><small>No spatial structure yet</small></div>
+        <div class="stage-bottom"><span id="interaction-hint">Drag to orbit · scroll to zoom</span><div class="phase-key"><span>Local phase</span><i></i><span>0 → 2π</span></div></div>
+      </div>
+      <div class="playback">
+        <div class="playback-top"><div class="transport"><button id="reset" title="Return to before source birth" aria-label="Reset playback">↶</button><button id="play" class="play" disabled>Play</button><button id="step" disabled title="Advance one recorded event">+1</button></div><span class="event-position"><strong id="cursor">0</strong><span> / </span><span id="total">0</span><small>events shown</small></span><label class="speed" for="speed">Speed<select id="speed"><option value="512">512 / s</option><option value="2048" selected>2,048 / s</option><option value="8192">8,192 / s</option><option value="32768">32,768 / s</option></select></label></div>
+        <input id="timeline" aria-label="Event replay position" type="range" min="0" max="1" value="0" disabled>
+        <div class="timeline-labels"><span>Source birth</span><span>Playback speed is not physical time</span><span>End of record</span></div>
+      </div>
+      <div id="saved-record" class="saved-record" role="status" hidden></div>
+      <div id="error" class="error" role="alert" hidden></div>
+    </section>
+    <aside class="inspector panel">
+      <div class="eyebrow">OBSERVABLES</div><h2>Measurements</h2>
+      <div class="stat source-stat"><span>Persistent sources</span><strong id="source-count">0</strong><small>Persists after birth</small></div>
+      <div class="stat"><span>Maximum local depth</span><strong id="max-depth">0</strong><small>Causal updates within one channel</small></div>
+      <div class="stat"><span>Total frontier weight</span><strong id="weight">—</strong><small>Dimensionless transport weight</small></div>
+      <div class="stat compact"><span>Depth dispersion <b id="spread">—</b></span><div class="meter"><i id="spread-meter"></i></div><small>Standard deviation / mean depth</small></div>
+      <div class="stat compact"><span>Phase coherence <b id="coherence">—</b></span><canvas id="phase-chart" aria-label="Current frontier phase distribution"></canvas><small>Magnitude of the circular mean</small></div>
+      <div class="event-inspector"><div class="tiny-label">EVENT INSPECTOR</div><div id="event-detail">Advance playback to inspect an event.</div></div>
+      <div class="engine-status"><i></i><span id="engine-status">Waiting for engine</span></div>
+    </aside>
+  </main>
+  <footer><span>TEF / Single-source rollout experiment</span><span>Local rules → causal history → observer view</span><a href="https://github.com/the-emergent-frame/tef-emulator" target="_blank" rel="noreferrer">Open source ↗</a></footer>
+  <script src="/app.js" defer></script>
+</body>
+</html>

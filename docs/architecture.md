@@ -1,12 +1,14 @@
 # Initial architecture baseline
 
-Status: proposed implementation direction, 2026-09-13. No physical evolution rules have been implemented.
+Status: CPU reference implemented, 2026-09-13. Experiment 0001 executes the candidate `source-channels-v0.1` scaffold; physical transfer laws remain open.
 
 ## Purpose
 
 Build a computational laboratory for candidate TEF rules. Start with a single replaceable source boundary and the open structure associated with it. Defer the internal construction of persistent matter closures.
 
 The intended first investigations concern structural growth, candidate source-to-structure transfer, propagation, phase correlations, and the behavior of coarse-grained observables.
+
+[Experiment 0001](../experiments/0001-single-source-rollout/README.md) specializes this direction to a supplied source-birth boundary with a hydrogen interpretation and an isotropic three-dimensional observer representation. The observer convention is an explicit input; pre-rollout volume and direction are not assumed. Internal source formation and physical transfer rules remain to be specified.
 
 ## Computational objects
 
@@ -27,15 +29,15 @@ Events whose inputs are unavailable cannot execute. Events that compete for the 
 
 A single stored execution is one history. Probabilistic history sampling and coherent amplitude evolution are separate modeling choices; retaining multiple histories does not itself establish quantum superposition.
 
-The initial reference implementation should make scheduling, random choices, and replay explicit. GPU work and parallel event application follow profiling and reference comparisons.
+The reference makes balanced and seeded scheduling, local choices, and replay explicit. GPU work and parallel event application follow profiling and reference comparisons.
 
 ## Engine and experiment layers
 
-Rust owns the core state representation, rule application, dependency tracking, and replay. Python configures experiments and analyzes results. PyO3 and maturin will connect these layers once executable packages are introduced.
+Rust owns the core state representation, rule application, dependency tracking, and replay. Python configures experiments and analyzes results. The current interface uses one subprocess call per run and JSON records. PyO3 and maturin remain candidates for native integration.
 
-Use petgraph initially for graph operations, behind a storage interface. If rules require hyperedges, preserve their incidence structure and port ordering explicitly. Do not identify a hypergraph with an ordinary pairwise graph without recording the encoding.
+The reference stores independent channels in vectors. Introduce general graph storage such as petgraph when topology-changing rules require it. If rules require hyperedges, preserve their incidence structure and port ordering explicitly. Do not identify a hypergraph with an ordinary pairwise graph without recording the encoding.
 
-Rerun is the initial observation-tool candidate. Its sequence indices can represent execution records. Physical clocks, if later defined, are separately named model observables.
+The implemented observer uses JavaScript/Canvas with a separate 3D mapping. Rerun remains an integration candidate; its sequence indices can represent execution records. Physical clocks, if later defined, are separately named model observables.
 
 ## Source model
 
@@ -59,12 +61,12 @@ A coarse-grained model must be checked against a smaller reference computation. 
 
 Keep small reference fixtures in Git. Large event logs, checkpoints, and recordings belong outside the source repository and should carry configuration manifests and checksums when shared.
 
-## First implementation milestones
+## Implementation milestones
 
-1. Specify a minimal local state schema and a candidate source-boundary rule.
-2. Implement a deterministic reference rewrite engine and causal event records.
-3. Add replay, bookkeeping checks, and independent-event ordering checks.
-4. Expose a Python experiment API and basic observations.
+1. Completed: minimal state schema and [candidate source-channel rule](../rules/source-channels-v0.1/README.md).
+2. Completed: Rust reference rewrite engine and causal event records.
+3. Completed: replay, bookkeeping checks, and independent-event ordering tests.
+4. Completed: Python experiment API and interactive English observer.
 5. Compare candidate transfer and phase rules with controls at increasing sizes.
 6. Introduce a validated coarse-graining method for a specific observable.
 

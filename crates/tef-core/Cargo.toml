@@ -1,0 +1,12 @@
+[package]
+name = "tef-core"
+description = "Reference event engine for the TEF single-source rollout experiment"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "tef-run"
+path = "src/main.rs"
