@@ -1,0 +1,29 @@
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+.DS_Store
+.idea/
+.vscode/
+
+# Rust build output; retain Cargo.lock when introduced for reproducible runs.
+target/
+
+# Python build output and caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+build/
+dist/
+
+# Generated simulation output; curated small fixtures belong in experiments/.
+/runs/
+/output/
+/tmp/
+*.rrd
