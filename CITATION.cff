@@ -1,0 +1,34 @@
+cff-version: 1.2.0
+message: >-
+  If you use TEF Emulator in your research, please cite this software.
+  When a Zenodo archive is available, cite the version-specific DOI for
+  the release you used. Cite the relevant TEF papers separately for
+  their theoretical contributions.
+type: software
+title: "TEF Emulator"
+authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: "https://orcid.org/0009-0005-5892-0293"
+    affiliation: "Independent Researcher"
+version: "0.1.0"
+repository-code: "https://github.com/the-emergent-frame/tef-emulator"
+url: "https://github.com/the-emergent-frame/tef-emulator"
+license: MIT
+abstract: >-
+  TEF Emulator is an experimental, event-driven computational laboratory
+  for exploring candidate spacetime rollout rules in The Emergent Frame.
+  A Rust reference engine records local state transitions and causal
+  dependencies, Python supports reproducible experiments and verification,
+  and a browser observer provides interactive replay and diagnostics.
+  The initial experiment models a persistent source extending independent
+  channels, with an explicitly assumed isotropic three-dimensional observer
+  representation. Matter formation and physical energy transfer remain
+  open modeling questions.
+keywords:
+  - The Emergent Frame
+  - spacetime rollout
+  - event-driven simulation
+  - causal histories
+  - computational physics
+  - reproducible research

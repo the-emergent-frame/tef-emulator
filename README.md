@@ -67,6 +67,17 @@ Node is only needed for the JavaScript syntax check. Tests cover local state con
 
 3D isotropy, channel independence, and local phase advance are explicit inputs here. Transport weight is dimensionless, with no assigned GeV conversion. Neither a large energy scale nor a large event count establishes quantum behavior. A result establishes a consequence of its specified rules; connecting it to physical phenomena requires further evidence.
 
+## Citation
+
+Citation metadata is provided in [CITATION.cff](CITATION.cff). If you use the
+emulator in research, cite the software version you used and cite the relevant
+TEF papers separately for their theoretical contributions. Once a release is
+archived on Zenodo, use that release's version-specific DOI.
+
+For each release, keep the CFF version aligned with `Cargo.toml` and add the
+actual release date. Add a software DOI only after it has been assigned by
+Zenodo; do not reuse a paper DOI or a previous release's DOI for a new version.
+
 ## License
 
 Software and original documentation are licensed under the [MIT License](LICENSE). Referenced papers and third-party projects retain their own licenses.
