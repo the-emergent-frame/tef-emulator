@@ -2,13 +2,19 @@
 
 TEF Emulator welcomes discussion of executable rules, reproducible experiments, numerical methods, and implementation improvements.
 
-The repository is currently at the architecture stage. No runtime API or physical rule set is stable yet.
+The repository has a runnable experimental reference. No runtime API or physical rule set is stable yet.
 
 ## Proposing a model or experiment
 
 Describe the question, local state, admissible transitions, and observables. Identify which assumptions come from a specific TEF paper version and which are new proposals. Specify scheduling choices, boundary conditions, and any intended conservation or normalization properties.
 
 Explain what would count as a negative result and which control would distinguish the proposed mechanism from a generic artifact of the implementation.
+
+Follow the [citation and provenance policy](docs/citation.md). Pin the paper
+versions actually used, identify source sections or equations in the rule
+record, and update affected references when adopting a different theoretical
+basis. A bibliography entry alone does not mean a paper's construction has
+been implemented or validated.
 
 ## Reproducibility
 

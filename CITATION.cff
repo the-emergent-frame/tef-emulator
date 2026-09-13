@@ -1,6 +1,7 @@
 cff-version: 1.2.0
 message: >-
-  If you use TEF Emulator in your research, please cite this software.
+  If you use TEF Emulator to produce research results, please cite the
+  software version used.
   When a Zenodo archive is available, cite the version-specific DOI for
   the release you used. Cite the relevant TEF papers separately for
   their theoretical contributions.
@@ -24,7 +25,8 @@ abstract: >-
   The initial experiment models a persistent source extending independent
   channels, with an explicitly assumed isotropic three-dimensional observer
   representation. Matter formation and physical energy transfer remain
-  open modeling questions.
+  open modeling questions. The current scaffold and engineering controls
+  do not establish an independent physical finding.
 keywords:
   - The Emergent Frame
   - spacetime rollout
@@ -32,3 +34,97 @@ keywords:
   - causal histories
   - computational physics
   - reproducible research
+
+# Version-pinned research background; scope describes current implementation relevance.
+references:
+- type: article
+  title: A Helical Spacetime Ansatz Linking the Planck Scale and Electroweak Mixing
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '5.1'
+  doi: 10.5281/zenodo.22101000
+  url: https://doi.org/10.5281/zenodo.22101000
+  scope: 'Paper I. Broader TEF framework background: the helical ansatz and electroweak correspondence.
+    Its quantitative construction is not implemented by the current kernel.'
+- type: article
+  title: From a Gravity-Calibrated Helix to a Conditional Fine-Structure Correspondence
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '4.7'
+  doi: 10.5281/zenodo.22117153
+  url: https://doi.org/10.5281/zenodo.22117153
+  scope: 'Paper II. Broader TEF framework background: the fine-structure correspondence. Its
+    quantitative construction is not implemented by the current kernel.'
+- type: article
+  title: 'From a Gravity-Calibrated Helix to Neutrino Oscillation Correspondences: A Third
+    Cross-Sector Comparison of the Frozen TEF Shape Parameter'
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '4.2'
+  doi: 10.5281/zenodo.22150998
+  url: https://doi.org/10.5281/zenodo.22150998
+  scope: 'Paper III. Broader TEF framework background: neutrino oscillation correspondences.
+    Its quantitative construction is not implemented by the current kernel.'
+- type: article
+  title: 'Closed Matter and Open Space: A Relative-Framing Ansatz for Incomplete Quark Sectors
+    and the Matter–Space Interface'
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '4.6'
+  doi: 10.5281/zenodo.22256714
+  url: https://doi.org/10.5281/zenodo.22256714
+  scope: Paper IV. Conceptual background for closed matter, open space, and the matter-space
+    interface. The current kernel supplies a source boundary and does not implement matter
+    topology.
+- type: article
+  title: From a Gravity-Calibrated Helix to a Strong-Interaction Confinement Correspondence
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '4.1'
+  doi: 10.5281/zenodo.22412464
+  url: https://doi.org/10.5281/zenodo.22412464
+  scope: 'Paper V. Broader TEF framework background: the strong-interaction confinement correspondence.
+    Its quantitative construction is not implemented by the current kernel.'
+- type: article
+  title: 'From a Gravity-Calibrated Helix to a Matter-Spacetime Interface: Closure Obstruction
+    and a Factorized Mass-Squared Ansatz'
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '3.2'
+  doi: 10.5281/zenodo.22649267
+  url: https://doi.org/10.5281/zenodo.22649267
+  scope: Paper VI. Conceptual background for the matter-spacetime interface. The current channel
+    and phase rules are additional modeling assumptions, not an implementation of this paper's
+    mass-squared ansatz.
+- type: article
+  title: 'The Emergent Frame: A Minimal Framework for Spacetime Rollout, Interaction, and
+    Excitation'
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+  year: 2026
+  version: '2.5'
+  doi: 10.5281/zenodo.22723329
+  url: https://doi.org/10.5281/zenodo.22723329
+  scope: Paper VII. Conceptual background for the spacetime rollout framework and energy bookkeeping.
+    The current kernel has no physical energy-transfer law and does not implement the paper's
+    quantitative energy scale.

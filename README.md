@@ -69,14 +69,18 @@ Node is only needed for the JavaScript syntax check. Tests cover local state con
 
 ## Citation
 
-Citation metadata is provided in [CITATION.cff](CITATION.cff). If you use the
-emulator in research, cite the software version you used and cite the relevant
-TEF papers separately for their theoretical contributions. Once a release is
-archived on Zenodo, use that release's version-specific DOI.
+Citation metadata and seven version-pinned background papers are provided in
+[CITATION.cff](CITATION.cff). The emulator currently provides an experimental
+scaffold and engineering controls, with no independent physical finding claimed.
 
-For each release, keep the CFF version aligned with `Cargo.toml` and add the
-actual release date. Add a software DOI only after it has been assigned by
-Zenodo; do not reuse a paper DOI or a previous release's DOI for a new version.
+For theoretical claims, cite the relevant TEF papers. If you use the emulator
+to produce results, also cite the software version used, preferably through its
+version-specific Zenodo DOI when available. The background bibliography does
+not imply that every user must cite all seven papers or that all their
+constructions have been implemented.
+
+See the [citation and provenance policy](docs/citation.md) for how paper
+versions, software releases, authorship, and DOIs are maintained.
 
 ## License
 

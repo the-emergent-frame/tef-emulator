@@ -4,7 +4,7 @@ Status: implemented candidate scaffold for experiment 0001. These transitions ar
 
 ## Motivation and inherited context
 
-The experiment follows the TEF research direction of persistent matter-associated structure and open spacetime rollout. Paper VI motivates investigating source-local cycles; Paper VII discusses a rollout energy bookkeeping scale. Neither supplies the independent-channel transition below. No numerical paper parameter is used by this kernel.
+The experiment follows the TEF research direction of persistent matter-associated structure and open spacetime rollout. Background references are [Paper IV v4.6](https://doi.org/10.5281/zenodo.22256714) for the matter/space-interface context, [Paper VI v3.2](https://doi.org/10.5281/zenodo.22649267) for the interface and source-local cycle context, and [Paper VII v2.5](https://doi.org/10.5281/zenodo.22723329) for the rollout framework and energy bookkeeping scale. These are conceptual references; no paper equation is translated into the independent-channel transition below. No numerical paper parameter is used by this kernel. The broader bibliography is pinned in [CITATION.cff](../../CITATION.cff).
 
 The user-selected boundary is one hydrogen-associated source with an isotropic 3D observer representation. Source formation, atomic constituents, and physical energy release are deferred.
 

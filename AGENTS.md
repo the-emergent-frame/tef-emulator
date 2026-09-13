@@ -17,6 +17,7 @@
 - Computational event indices and visualization coordinates are not physical time or distance unless an explicit model defines that interpretation.
 - State whether quantum amplitudes and composition laws are inputs or claimed outputs of an experiment.
 - Record model changes and negative results. Do not silently retune a rule against its comparison target.
+- Follow `docs/citation.md` when changing citation metadata, paper dependencies, or release metadata. Keep paper versions pinned and distinguish theoretical background from implemented rules and software findings.
 
 ## Implementation direction
 
