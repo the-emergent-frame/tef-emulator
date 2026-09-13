@@ -20,24 +20,30 @@
       <p class="intro">A persistent source.<br>A history built from local events.</p>
       <div class="source-card"><span class="source-symbol">H<span>SOURCE</span></span><div><strong>Hydrogen proxy</strong><small>Source birth as a boundary</small></div></div>
       <form id="config-form">
-        <label for="channels">Channels <span>angular samples</span></label>
+        <label for="channels">Channels <span>causal ports</span></label>
         <select id="channels" name="channels"><option value="64">64</option><option value="128">128</option><option value="256" selected>256</option><option value="512">512</option><option value="1024">1,024</option></select>
         <label for="events">Local updates</label>
         <select id="events" name="events"><option value="4096">4,096</option><option value="16384">16,384</option><option value="32768" selected>32,768</option><option value="65536">65,536</option><option value="131072">131,072</option></select>
         <label for="scheduler">Event scheduling</label>
         <select id="scheduler" name="scheduler"><option value="balanced">Balanced round-robin</option><option value="seeded">Seeded random interleaving</option></select>
-        <div class="paired"><div><label for="phase-steps">Updates / turn</label><input id="phase-steps" name="phase_steps" type="number" min="2" max="4096" value="32" required></div><div><label for="seed">Random seed</label><input id="seed" name="seed" type="number" min="0" max="4294967295" value="42" required></div></div>
+        <div class="paired"><div><label for="phase-steps" title="Local phase rule; Generate run applies changes">Updates / turn</label><input id="phase-steps" name="phase_steps" type="number" min="2" max="4096" value="32" required></div><div><label for="seed">Random seed</label><input id="seed" name="seed" type="number" min="0" max="4294967295" value="42" required></div></div>
         <button class="primary" id="generate" type="submit"><span>Generate run</span><span>↗</span></button>
       </form>
       <div class="rule-note"><span class="tiny-label">CANDIDATE RULE</span><p>Independent channels carry equal transport weights. History persists; weight moves with the frontier.</p><code>source-channels-v0.1</code></div>
-      <details><summary>Assumptions & open questions</summary><p>3D isotropy is an observer convention. Phase advance and weight transfer are proposed rules. Matter formation, quantum interference, and physical energy release remain open; the 10¹⁹ energy scale is not yet modeled.</p></details>
+      <details><summary>Assumptions & open questions</summary><p>Parallel and radial views are observer embeddings. Helix spines represent rollout generators; their spacing is not physical space density. Phase advance and weight transfer are proposed rules. Matter formation, quantum interference, and physical energy release remain open; the 10¹⁹ energy scale is not yet modeled.</p></details>
     </aside>
     <section class="observation panel" aria-label="Experiment observation">
       <div class="stage-header"><div class="tabs" role="group" aria-label="Observation view"><button class="active" id="view-space" aria-pressed="true">Spatial view</button><button id="view-causal" aria-pressed="false">Causal view</button></div><div class="stage-actions"><button id="home-camera" title="Reset camera" aria-label="Reset camera">⌖</button><button id="export" disabled>Export ↓</button><button id="import">Import ↑</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
+      <div class="observer-controls" id="observer-controls">
+        <label for="mapping-mode">Observer mapping<select id="mapping-mode"><option value="parallel-rollout">Parallel rollout</option><option value="radial-expanding">Radial expanding</option></select></label>
+        <label for="base-radius">Base radius <output id="radius-value">0.025</output><input id="base-radius" type="range" min="0" max="0.08" step="0.001" value="0.025"></label>
+        <label for="radial-expansion" id="expansion-control" hidden>Radial expansion <output id="expansion-value">0.08</output><input id="radial-expansion" type="range" min="0" max="0.3" step="0.01" value="0.08"></label>
+        <div class="observer-notes"><span id="geometry-note">Visual units only</span><span id="phase-period">Phase comes from the run</span></div>
+      </div>
       <div class="stage" id="stage">
         <canvas id="universe" aria-label="Interactive 3D rollout view; select an event in the causal view to inspect its parent"></canvas>
-        <div class="stage-label"><span class="tiny-label" id="view-label">SOURCE-CENTERED OBSERVER</span><div id="stage-state">Preparing experiment</div></div>
-        <div class="coordinate-note" id="coordinate-note">Isotropic 3D mapping · radius encodes local depth</div>
+        <div class="stage-label"><span class="tiny-label" id="view-label">PARALLEL ROLLOUT · OBSERVER</span><div id="stage-state">Preparing experiment</div></div>
+        <div class="coordinate-note" id="coordinate-note">Phase spines · spacing is not physical density</div>
         <div id="loading" class="loading" hidden><span class="spinner"></span><span>Rust is generating the causal history…</span></div>
         <div class="stage-empty" id="empty"><span class="empty-orbit"></span><p>Before source birth</p><small>No spatial structure yet</small></div>
         <div class="stage-bottom"><span id="interaction-hint">Drag to orbit · scroll to zoom</span><div class="phase-key"><span>Local phase</span><i></i><span>0 → 2π</span></div></div>
@@ -62,6 +68,6 @@
     </aside>
   </main>
   <footer><span>TEF / Single-source rollout experiment</span><span>Local rules → causal history → observer view</span><a href="https://github.com/the-emergent-frame/tef-emulator" target="_blank" rel="noreferrer">Open source ↗</a></footer>
-  <script src="/app.js" defer></script>
+  <script src="/app.js" type="module"></script>
 </body>
 </html>

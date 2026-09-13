@@ -23,8 +23,7 @@ abstract: >-
   dependencies, Python supports reproducible experiments and verification,
   and a browser observer provides interactive replay and diagnostics.
   The initial experiment models a persistent source extending independent
-  channels, with an explicitly assumed isotropic three-dimensional observer
-  representation. Matter formation and physical energy transfer remain
+  channels, with alternative parallel and radial observer representations. Matter formation and physical energy transfer remain
   open modeling questions. The current scaffold and engineering controls
   do not establish an independent physical finding.
 keywords:

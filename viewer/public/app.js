@@ -1,9 +1,10 @@
+import { MAPPING_VERSION, DEFAULTS, createMapping, spineChannels, restoreObserver } from "./observer-mapping.mjs";
 "use strict";
 const $ = (id) => document.getElementById(id);
 const canvas = $("universe"), ctx = canvas.getContext("2d");
 const chart = $("phase-chart"), chartCtx = chart.getContext("2d");
 const TAU = Math.PI * 2, fmt = (n) => n.toLocaleString("en-US");
-const model = { run: null, cursor: 0, depths: [], parents: [], phase: [], directions: [], lanes: [], playing: false, busy: false, view: "space", selected: null, yaw: -.45, pitch: .25, zoom: 1, width: 0, height: 0, hits: [], maxDepth: 0, credit: 0 };
+const model = { run: null, cursor: 0, depths: [], parents: [], phase: [], mapping: null, observer: { ...DEFAULTS }, lanes: [], playing: false, busy: false, view: "space", selected: null, yaw: -.45, pitch: .25, zoom: 1, width: 0, height: 0, hits: [], maxDepth: 0, credit: 0 };
 let dragging = null, needsDraw = true, lastFrame = performance.now(), lastDraw = 0;
 
 function phaseColor(phase, alpha = 1, light = 70) {
@@ -24,14 +25,6 @@ function resize() {
 new ResizeObserver(resize).observe($("stage"));
 new ResizeObserver(() => { resize(); }).observe(chart.parentElement);
 
-function directions(count) {
-  // Equal-area latitude bands and a golden-angle azimuth: observer mapping only.
-  const angle = Math.PI * (3 - Math.sqrt(5));
-  return Array.from({ length: count }, (_, i) => {
-    const y = 1 - 2 * (i + .5) / count, radius = Math.sqrt(1 - y * y);
-    return [radius * Math.cos(i * angle), y, radius * Math.sin(i * angle)];
-  });
-}
 function resetFrontier() {
   const n = model.run.config.channels;
   model.depths = new Uint32Array(n); model.parents = new Uint32Array(n); model.phase = new Float64Array(n);
@@ -122,52 +115,52 @@ function glow(x, y, size, rgb, alpha) {
   ctx.fillStyle = gradient; ctx.fillRect(x - size, y - size, size * 2, size * 2);
 }
 function drawSpace() {
+  model.hits = [];
   if (model.cursor === 0) return;
-  const n = model.run.config.channels, finalMax = Math.max(1, model.run.summary.max_depth), center = project([0, 0, 0]);
-  const heads = [], trailStep = Math.max(1, Math.ceil(Math.max(1, model.cursor - 1) / 9000));
-  // Historical sites contain retained structure, not extra active transport weight.
+  const mapping = model.mapping, n = model.run.config.channels;
+  const chosen = model.selected > 0 ? model.run.events[model.selected - 1].channel : null;
+  const detailed = new Set(spineChannels(n, chosen)), heads = [];
+  // Only representative phase spines are detailed. All active frontiers remain
+  // visible/selectable; neither point spacing nor line opacity measures density.
   for (let channel = 0; channel < n; channel++) {
-    const depth = model.depths[channel], vector = model.directions[channel];
+    const depth = model.depths[channel];
     if (!depth) continue;
-    const head = project(vector, depth / finalMax);
-    ctx.strokeStyle = `rgba(108,174,181,${.025 + .035 * head.p})`; ctx.lineWidth = .55;
-    ctx.beginPath(); ctx.moveTo(center.x, center.y); ctx.lineTo(head.x, head.y); ctx.stroke();
-    for (let d = 1; d < depth; d += trailStep) {
-      const point = project(vector, d / finalMax), phase = d % model.run.config.phase_steps * TAU / model.run.config.phase_steps;
-      ctx.fillStyle = phaseColor(phase, .09 + .1 * Math.max(0, point.z + .5), 66);
-      const size = Math.max(.5, .8 * point.p);
-      ctx.fillRect(point.x, point.y, size, size);
+    const head = project(mapping.point(channel, depth, model.phase[channel]));
+    heads.push({ ...head, phase: model.phase[channel], id: model.parents[channel], detailed: detailed.has(channel) });
+    if (!detailed.has(channel)) continue;
+    const curve = mapping.curve(channel, depth);
+    if (curve[0].depth > 0) {
+      // A dashed axis marks omitted earlier turns; it is not a physical filament.
+      const start = project(mapping.axis(channel, 0)), end = project(mapping.axis(channel, curve[0].depth));
+      ctx.strokeStyle = "#60808d25"; ctx.setLineDash([2, 5]);
+      ctx.beginPath(); ctx.moveTo(start.x, start.y); ctx.lineTo(end.x, end.y); ctx.stroke(); ctx.setLineDash([]);
     }
-    heads.push({ ...head, phase: model.phase[channel], id: model.parents[channel] });
+    for (let i = 1; i < curve.length; i++) {
+      const a = project(curve[i - 1].position), b = project(curve[i].position);
+      ctx.strokeStyle = phaseColor(curve[i].phase, channel === chosen ? .95 : .48, 70);
+      ctx.lineWidth = channel === chosen ? 1.8 : 1.05;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    }
   }
-  // Faint contours visualize the current observer boundary; no background grid.
-  const extent = model.maxDepth / finalMax;
-  if (extent > .06) {
-    ctx.strokeStyle = "rgba(134,188,192,.07)"; ctx.lineWidth = .7;
-    for (const axis of [0, 1, 2]) {
-      ctx.beginPath();
-      for (let j = 0; j <= 96; j++) {
-        const a = j / 96 * TAU;
-        const v = axis === 0 ? [0, Math.cos(a), Math.sin(a)] : axis === 1 ? [Math.cos(a), 0, Math.sin(a)] : [Math.cos(a), Math.sin(a), 0];
-        const p = project(v, extent); if (j === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
-      }
-      ctx.stroke();
-    }
+  if (model.observer.mode === "parallel-rollout") {
+    // Compact source boundary in observer coordinates, not multiple sources.
+    const starts = spineChannels(n).map(c => project(mapping.axis(c, 0)));
+    for (const p of starts) { ctx.fillStyle = "#e9ad7255"; ctx.beginPath(); ctx.arc(p.x, p.y, 1.5, 0, TAU); ctx.fill(); }
   }
   heads.sort((a, b) => a.z - b.z);
-  model.hits = [];
   for (const point of heads) {
     const selected = model.selected === point.id;
-    ctx.fillStyle = phaseColor(point.phase, .5 + .4 * Math.min(1, point.p), 75);
-    ctx.beginPath(); ctx.arc(point.x, point.y, (selected ? 3 : 1.65) * point.p, 0, TAU); ctx.fill();
+    ctx.fillStyle = phaseColor(point.phase, point.detailed ? .95 : .2, 75);
+    ctx.beginPath(); ctx.arc(point.x, point.y, (selected ? 3 : point.detailed ? 2 : 1) * point.p, 0, TAU); ctx.fill();
     if (selected) { ctx.strokeStyle = "#f2c49c"; ctx.beginPath(); ctx.arc(point.x, point.y, 7, 0, TAU); ctx.stroke(); }
     model.hits.push({ x: point.x, y: point.y, id: point.id });
   }
-  glow(center.x, center.y, 45, "236,166,101", .32);
-  glow(center.x, center.y, 16, "247,198,142", .9);
+  const center = project(mapping.source());
+  glow(center.x, center.y, 35, "236,166,101", .32);
+  glow(center.x, center.y, 13, "247,198,142", .9);
   ctx.fillStyle = "#ffe4bd"; ctx.beginPath(); ctx.arc(center.x, center.y, 3.5, 0, TAU); ctx.fill();
-  ctx.strokeStyle = "#e9ad7255"; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(center.x, center.y, 9, 0, TAU); ctx.stroke();
-  ctx.fillStyle = "#dcb58c"; ctx.font = "10px -apple-system, sans-serif"; ctx.textAlign = "center"; ctx.fillText("H · SOURCE", center.x, center.y + 29);
+  ctx.fillStyle = "#dcb58c"; ctx.font = "10px -apple-system, sans-serif"; ctx.textAlign = "center";
+  ctx.fillText(model.observer.mode === "parallel-rollout" ? "H · SOURCE REGION" : "H · SOURCE", center.x, center.y + 27);
   model.hits.push({ x: center.x, y: center.y, id: 0 });
 }
 function drawCausal() {
@@ -200,20 +193,35 @@ function drawCausal() {
 }
 function draw() {
   ctx.clearRect(0, 0, model.width, model.height);
+  model.hits = [];
   if (model.run) model.view === "space" ? drawSpace() : drawCausal();
   needsDraw = false;
 }
 function setView(view) {
   model.view = view;
   for (const key of ["space", "causal"]) { $("view-" + key).classList.toggle("active", key === view); $("view-" + key).setAttribute("aria-pressed", String(key === view)); }
-  $("view-label").textContent = view === "space" ? "SOURCE-CENTERED OBSERVER" : "CAUSAL DEPENDENCIES";
-  $("coordinate-note").textContent = view === "space" ? "Isotropic 3D mapping · radius encodes local depth" : "Selected channels · dashed lines omit earlier history";
+  $("view-label").textContent = view === "space" ? model.observer.mode === "parallel-rollout" ? "PARALLEL ROLLOUT · OBSERVER" : "RADIAL EXPANDING · OBSERVER" : "CAUSAL DEPENDENCIES";
+  $("coordinate-note").textContent = view === "space" ? "Phase spines · spacing is not physical density" : "Selected channels · dashed lines omit earlier history";
   $("interaction-hint").textContent = view === "space" ? "Drag to orbit · scroll to zoom · click a frontier" : "Click to inspect · recent depths per channel";
+  $("observer-controls").hidden = view !== "space";
   needsDraw = true;
+}
+function updateMapping() {
+  if (model.run) model.mapping = createMapping(model.run.config, model.run.summary.max_depth, model.observer);
+  $("mapping-mode").value = model.observer.mode;
+  $("base-radius").value = model.observer.baseRadius;
+  $("radial-expansion").value = model.observer.expansion;
+  $("radius-value").textContent = model.observer.baseRadius.toFixed(3);
+  $("expansion-value").textContent = model.observer.expansion.toFixed(2);
+  $("expansion-control").hidden = model.observer.mode !== "radial-expanding";
+  const n = model.run?.config.channels || 0;
+  $("geometry-note").textContent = `${Math.min(n, 24)} / ${n} phase spines · up to 8 recent turns · visual units only`;
+  $("phase-period").textContent = model.run ? `Recorded phase: ${model.run.config.phase_steps} updates / turn` : "Phase comes from the run";
+  setView(model.view);
 }
 function installRun(data) {
   $("saved-record").hidden = true;
-  model.run = data; model.directions = directions(data.config.channels);
+  model.run = data; updateMapping();
   model.lanes = Array.from({ length: data.config.channels }, () => []);
   for (const event of data.events) model.lanes[event.channel].push(event);
   model.selected = null; resetFrontier();
@@ -260,6 +268,12 @@ function validateRun(data) {
   }
   if (!data.summary || data.summary.max_depth !== Math.max(...depths) || data.summary.frontier_states !== c.channels || data.summary.source_count !== 1 || data.summary.rollout_events !== c.events || !Number.isFinite(data.summary.frontier_weight) || Math.abs(data.summary.frontier_weight - 1) > 1e-12) throw new Error("Record summary failed replay verification");
 }
+for (const [id, key] of [["mapping-mode", "mode"], ["base-radius", "baseRadius"], ["radial-expansion", "expansion"]]) {
+  $(id).addEventListener("input", () => {
+    model.observer[key] = key === "mode" ? $(id).value : Number($(id).value);
+    updateMapping();
+  });
+}
 $("config-form").addEventListener("submit", generate);
 $("play").addEventListener("click", () => { if (model.cursor >= model.run.events.length + 1) setCursor(0); setPlaying(!model.playing); });
 $("reset").addEventListener("click", () => { setPlaying(false); model.selected = null; setCursor(0); });
@@ -269,7 +283,7 @@ $("view-space").addEventListener("click", () => setView("space"));
 $("view-causal").addEventListener("click", () => setView("causal"));
 $("home-camera").addEventListener("click", () => { model.yaw = -.45; model.pitch = .25; model.zoom = 1; model.selected = null; needsDraw = true; updateStats(); });
 $("export").addEventListener("click", async () => {
-  const data = { ...model.run, observer: { mapping: "fibonacci-depth-v0.1", cursor: model.cursor, yaw: model.yaw, pitch: model.pitch, zoom: model.zoom } };
+  const data = { ...model.run, observer: { mapping: MAPPING_VERSION, ...model.observer, cursor: model.cursor, yaw: model.yaw, pitch: model.pitch, zoom: model.zoom } };
   $("export").disabled = true; $("error").hidden = true; $("saved-record").hidden = true;
   try {
     const response = await fetch("/api/export", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
@@ -292,11 +306,10 @@ $("import-file").addEventListener("change", async () => {
       if (element.tagName === "SELECT" && !Array.from(element.options).some(o => o.value === value)) element.add(new Option(value, value));
       element.value = value;
     }
-    if (data.observer?.mapping === "fibonacci-depth-v0.1") {
-      for (const [key, lo, hi] of [["yaw", -1000, 1000], ["pitch", -1.5, 1.5], ["zoom", .35, 3]]) {
-        const v = data.observer[key]; if (Number.isFinite(v)) model[key] = Math.min(hi, Math.max(lo, v));
-      }
-    }
+    const restored = restoreObserver(data.observer);
+    model.observer = { mode: restored.mode, baseRadius: restored.baseRadius, expansion: restored.expansion };
+    for (const key of ["yaw", "pitch", "zoom"]) model[key] = restored[key];
+    updateMapping();
     const cursor = data.observer?.cursor;
     setCursor(Number.isInteger(cursor) ? cursor : data.events.length + 1);
     $("engine-status").textContent = "IMPORTED · causal and weight checks passed";

@@ -8,7 +8,7 @@ Build a computational laboratory for candidate TEF rules. Start with a single re
 
 The intended first investigations concern structural growth, candidate source-to-structure transfer, propagation, phase correlations, and the behavior of coarse-grained observables.
 
-[Experiment 0001](../experiments/0001-single-source-rollout/README.md) specializes this direction to a supplied source-birth boundary with a hydrogen interpretation and an isotropic three-dimensional observer representation. The observer convention is an explicit input; pre-rollout volume and direction are not assumed. Internal source formation and physical transfer rules remain to be specified.
+[Experiment 0001](../experiments/0001-single-source-rollout/README.md) specializes this direction to a supplied source-birth boundary with a hydrogen interpretation and parallel and radial expanding observer representations. The observer convention is an explicit input; pre-rollout volume and direction are not assumed. Internal source formation and physical transfer rules remain to be specified.
 
 ## Computational objects
 
@@ -37,7 +37,7 @@ Rust owns the core state representation, rule application, dependency tracking, 
 
 The reference stores independent channels in vectors. Introduce general graph storage such as petgraph when topology-changing rules require it. If rules require hyperedges, preserve their incidence structure and port ordering explicitly. Do not identify a hypergraph with an ordinary pairwise graph without recording the encoding.
 
-The implemented observer uses JavaScript/Canvas with a separate 3D mapping. Rerun remains an integration candidate; its sequence indices can represent execution records. Physical clocks, if later defined, are separately named model observables.
+The implemented observer uses JavaScript/Canvas after a disposable `ObserverMapping` layer with parallel and radial expanding implementations. Observer parameters are exported separately and never written into causal state. Rerun remains an integration candidate; its sequence indices can represent execution records. Physical clocks, if later defined, are separately named model observables.
 
 ## Source model
 

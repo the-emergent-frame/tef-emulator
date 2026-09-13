@@ -21,3 +21,4 @@ jobs:
       - run: cargo clippy --workspace --all-targets --offline -- -D warnings
       - run: PYTHONPATH=python python3 -m unittest discover -s python/tests -v
       - run: node --check viewer/public/app.js
+      - run: node --test viewer/tests/*.test.mjs

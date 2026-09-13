@@ -42,13 +42,20 @@ Applying independent updates in another order commutes up to event-id relabeling
 
 Stop after the configured number of rollout events. Birth is stored separately and adds one event to the observer timeline. Bounds: `4 ≤ N ≤ 2048`, `0 ≤ events ≤ 200000`, `2 ≤ K ≤ 4096`, and an unsigned 32-bit seed. Counts and dependencies are integers; diagnostic phases and weights use 64-bit floats. No coarse-graining occurs in the engine.
 
-## Observer mapping: fibonacci-depth-v0.1
+## Observer mappings (separate from rule version)
 
-For channel i, use `y_i = 1 - 2(i+1/2)/N`, azimuth `iπ(3-√5)`, and the corresponding unit-sphere vector. This approximates isotropic angular sampling; it does not discover dimensionality. Equal-area latitude bands do not make the finite point set perfectly rotationally invariant.
+The default `parallel-rollout` and optional `radial-expanding` mappings are
+specified in the [observer documentation](../../viewer/README.md). Their mapping
+version is `rollout-observer-v0.2`; the causal rule remains `source-channels-v0.1`.
+They use the existing local phase to render disposable phase spines. Radius,
+expansion, grids, Fibonacci directions, and smooth interpolation have no role
+in this transition law. Apparent radial sparsity is not a physical density law.
 
-Display radius is local depth divided by the completed run's maximum depth (or 1 for a birth-only run), followed by camera projection. The final-depth reference keeps a fixed scale during replay. Faint globe curves are observer guides. Changing the budget changes this display normalization; compare numerical depths rather than pixel radii between runs.
-
-Spatial rendering samples historical points to roughly 9,000, plus channel frontiers and guide lines. Causal view shows a subset of channels and recent states with dashed omissions. Export always retains the full history. Neither sampling nor camera state feeds back into evolution.
+Earlier `fibonacci-depth-v0.1` records used equal-area latitude bands with a
+golden-angle azimuth and display radius `depth/max(1, final_max_depth)`; histories
+were shown as sampled points on rays. That was also an observer convention.
+Legacy imports keep their causal record and radial intent, using the current
+spine geometry as described in the compatibility note.
 
 ## Observables and rejection checks
 

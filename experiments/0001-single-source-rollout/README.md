@@ -18,13 +18,40 @@ The source persists while its boundary state can change. It is not consumed simp
 
 ## Observer convention
 
-The experiment adopts a source-centered, isotropic three-dimensional observer representation as an input convention. The lack of a pre-existing direction or volume motivates this choice but does not mathematically imply a unique dimension or metric.
+The experiment offers two disposable observer mappings: parallel rollout (the default conceptual/debug view) and a source-centered radial expanding-helix view. The latter adopts isotropic three-dimensional directions as an input convention. The lack of a pre-existing direction or volume motivates this choice but does not mathematically imply a unique dimension or metric.
 
 In the viewer, the source may be placed at the origin and rollout drawn as expansion or emission around it. These coordinates exist in the observer representation; they are not an empty container supplied to the pre-rollout model.
 
 Here "uniform" means no preferred angular direction in the adopted representation. Equal-solid-angle sampling can approximate that convention. It does not impose uniform density per spatial volume, an inverse-square transfer law, an expansion speed, or a radial growth law.
 
 Isotropy and three-dimensional display therefore cannot be counted as discoveries of this experiment. Their numerical implementation can be checked. Other properties of the event structure and its observables may still be research outputs.
+
+### Correcting radial sparsity
+
+A fixed number of radial axes spread across Euclidean shells with area `4πr²`.
+Their apparent sparsity is an embedding artifact. TEF does not currently claim
+that space density falls as `1/r²`; visual gaps between spines cannot establish
+such a law.
+
+A spacetime helix in the emulator should not be read as an isolated
+one-dimensional filament embedded in pre-existing three-dimensional space.
+The rendered helix is an observer representation of rollout structure;
+spatial dimensionality and local adjacency remain separate questions for
+later experiments. Centerlines are provisionally rollout generators / phase
+spines, rather than the entire spatial volume.
+
+`parallel-rollout` uses constant transverse port placement and parallel local
+axes. `radial-expanding` retains Fibonacci directions and adds a bounded,
+source-tapered visual radius envelope based on `R0 + kr`. Both render the same
+recorded phase with the same handedness. The [observer specification](../../viewer/README.md)
+defines the exact formulas, caps, interpolation, and display sampling.
+These are alternative observer mappings, not competing physical models.
+No display coordinate, radius, or direction enters the engine. The existing
+phase period remains a run parameter; geometry controls only redraw the view.
+
+This issue motivates a future experiment on intrinsic dimensionality and
+neighborhood structure. That experiment, and any new adjacency or transverse
+interaction rule it might need, are outside this revision.
 
 ## Two complementary records
 
