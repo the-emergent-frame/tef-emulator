@@ -23,7 +23,7 @@ abstract: >-
   dependencies, Python supports reproducible experiments and verification,
   and a browser observer provides interactive replay and diagnostics.
   The initial experiment models a persistent source extending independent
-  channels, with alternative parallel and radial observer representations. Matter formation and physical energy transfer remain
+  channels, with alternative intrinsic-untwisted and radial observer representations. Matter formation and physical energy transfer remain
   open modeling questions. The current scaffold and engineering controls
   do not establish an independent physical finding.
 keywords:
@@ -127,3 +127,19 @@ references:
   scope: Paper VII. Conceptual background for the spacetime rollout framework and energy bookkeeping.
     The current kernel has no physical energy-transfer law and does not implement the paper's
     quantitative energy scale.
+- type: article
+  title: Spacetime as Source-Local Rollout and the Conditional Emergence of Three-Dimensional
+    Effective Geometry in The Emergent Frame
+  authors:
+  - family-names: Wu
+    given-names: Xiaodan
+    orcid: https://orcid.org/0009-0005-5892-0293
+    affiliation: Independent Researcher
+  version: '3.12'
+  doi: 10.5281/zenodo.22776137
+  url: https://doi.org/10.5281/zenodo.22776137
+  year: 2026
+  scope: Paper VIII v3.12. Canonical conceptual reference for the source-local relational
+    representation and observer terminology. The transported-complex product and cubic volume-growth
+    results hold under explicit assumptions; Experiment 0001 does not implement or numerically
+    validate the full K_perp construction.

@@ -30,19 +30,21 @@
         <button class="primary" id="generate" type="submit"><span>Generate run</span><span>↗</span></button>
       </form>
       <div class="rule-note"><span class="tiny-label">CANDIDATE RULE</span><p>Independent channels carry equal transport weights. History persists; weight moves with the frontier.</p><code>source-channels-v0.1</code></div>
-      <details><summary>Assumptions & open questions</summary><p>Parallel and radial views are observer embeddings. Helix spines represent rollout generators; their spacing is not physical space density. Phase advance and weight transfer are proposed rules. Matter formation, quantum interference, and physical energy release remain open; the 10¹⁹ energy scale is not yet modeled.</p></details>
+      <details><summary>Assumptions & open questions</summary><p>Intrinsic Untwisted and Radial Observer are alternative observer mappings. A trajectory label is not a Euclidean position. Helix spines represent rollout generators; their spacing is not physical space density. Phase advance and weight transfer are proposed rules. Matter formation, quantum interference, and physical energy release remain open; the 10¹⁹ energy scale is not yet modeled.</p></details>
     </aside>
     <section class="observation panel" aria-label="Experiment observation">
       <div class="stage-header"><div class="tabs" role="group" aria-label="Observation view"><button class="active" id="view-space" aria-pressed="true">Spatial view</button><button id="view-causal" aria-pressed="false">Causal view</button></div><div class="stage-actions"><button id="home-camera" title="Reset camera" aria-label="Reset camera">⌖</button><button id="export" disabled>Export ↓</button><button id="import">Import ↑</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
       <div class="observer-controls" id="observer-controls">
-        <label for="mapping-mode">Observer mapping<select id="mapping-mode"><option value="parallel-rollout">Parallel rollout</option><option value="radial-expanding">Radial expanding</option></select></label>
-        <label for="base-radius">Base radius <output id="radius-value">0.025</output><input id="base-radius" type="range" min="0" max="0.08" step="0.001" value="0.025"></label>
-        <label for="radial-expansion" id="expansion-control" hidden>Radial expansion <output id="expansion-value">0.08</output><input id="radial-expansion" type="range" min="0" max="0.3" step="0.01" value="0.08"></label>
+        <div class="observer-group-label tiny-label">OBSERVER / RENDERING</div>
+        <label for="mapping-mode">Observer mapping<select id="mapping-mode"><option value="intrinsic-untwisted">Intrinsic Untwisted</option><option value="radial-observer">Radial Observer</option></select></label>
+        <label for="base-radius">Spine radius (visual) <output id="radius-value">0.025</output><input id="base-radius" type="range" min="0" max="0.08" step="0.001" value="0.025"></label>
+        <label for="display-thickness" title="Screen-space line width; does not change spine geometry">Display thickness <output id="thickness-value">1.05 px</output><input id="display-thickness" type="range" min="0.5" max="3" step="0.05" value="1.05"></label>
+        <p id="mapping-description" class="mapping-description">Schematic depth × trajectory labels. K⊥ relations are not implemented.</p>
         <div class="observer-notes"><span id="geometry-note">Visual units only</span><span id="phase-period">Phase comes from the run</span></div>
       </div>
       <div class="stage" id="stage">
         <canvas id="universe" aria-label="Interactive 3D rollout view; select an event in the causal view to inspect its parent"></canvas>
-        <div class="stage-label"><span class="tiny-label" id="view-label">PARALLEL ROLLOUT · OBSERVER</span><div id="stage-state">Preparing experiment</div></div>
+        <div class="stage-label"><span class="tiny-label" id="view-label">INTRINSIC UNTWISTED · SCHEMATIC</span><div id="stage-state">Preparing experiment</div></div>
         <div class="coordinate-note" id="coordinate-note">Phase spines · spacing is not physical density</div>
         <div id="loading" class="loading" hidden><span class="spinner"></span><span>Rust is generating the causal history…</span></div>
         <div class="stage-empty" id="empty"><span class="empty-orbit"></span><p>Before source birth</p><small>No spatial structure yet</small></div>
@@ -53,6 +55,7 @@
         <input id="timeline" aria-label="Event replay position" type="range" min="0" max="1" value="0" disabled>
         <div class="timeline-labels"><span>Source birth</span><span>Playback speed is not physical time</span><span>End of record</span></div>
       </div>
+      <div id="observer-migration" class="saved-record" role="status" hidden></div>
       <div id="saved-record" class="saved-record" role="status" hidden></div>
       <div id="error" class="error" role="alert" hidden></div>
     </section>
@@ -67,7 +70,7 @@
       <div class="engine-status"><i></i><span id="engine-status">Waiting for engine</span></div>
     </aside>
   </main>
-  <footer><span>TEF / Single-source rollout experiment</span><span>Local rules → causal history → observer view</span><a href="https://github.com/the-emergent-frame/tef-emulator" target="_blank" rel="noreferrer">Open source ↗</a></footer>
+  <footer><span>TEF / Single-source rollout experiment</span><span>Causal state → relational labels → observer → rendering</span><a href="https://github.com/the-emergent-frame/tef-emulator" target="_blank" rel="noreferrer">Open source ↗</a></footer>
   <script src="/app.js" type="module"></script>
 </body>
 </html>

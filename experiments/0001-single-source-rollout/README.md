@@ -16,50 +16,84 @@ The source is provisionally associated with a hydrogen atom for interpretation. 
 
 The source persists while its boundary state can change. It is not consumed simply because a new rollout event occurs. Whether transfer depletes any source quantity, and how repeated rollout is sustained, are explicitly unresolved.
 
-## Observer convention
+## Theory reference
 
-The experiment offers two disposable observer mappings: parallel rollout (the default conceptual/debug view) and a source-centered radial expanding-helix view. The latter adopts isotropic three-dimensional directions as an input convention. The lack of a pre-existing direction or volume motivates this choice but does not mathematically imply a unique dimension or metric.
+Wu, X. (2026). *Spacetime as Source-Local Rollout and the Conditional Emergence
+of Three-Dimensional Effective Geometry in The Emergent Frame* (Version 3.12).
+Zenodo. https://doi.org/10.5281/zenodo.22776137
 
-In the viewer, the source may be placed at the origin and rollout drawn as expansion or emission around it. These coordinates exist in the observer representation; they are not an empty container supplied to the pre-rollout model.
+This is the canonical conceptual reference for this observer revision. The
+paper supplies a conditional mathematical framework; Experiment 0001 visualizes
+source-local rollout and its alternative observer representations. It does
+not numerically implement or validate the full construction.
 
-Here "uniform" means no preferred angular direction in the adopted representation. Equal-solid-angle sampling can approximate that convention. It does not impose uniform density per spatial volume, an inverse-square transfer law, an expansion speed, or a radial growth law.
+In **Exact product theorem** (`eq:product`), incidence- and measure-preserving
+transported copies of a transverse relational complex can be intrinsically
+untwisted into `K ≅ Z_cell × K_perp`. **Cubic volume growth** (`eq:df3`) obtains
+`d_f=3` under the stated uniform quadratic transverse-growth assumption and
+controlled longitudinal scales. The two-dimensional transverse growth class is
+an explicit structural hypothesis, not deduced from a helix's normal plane.
+The full Z factor idealizes homogeneous bulk; this finite, one-sided emulator
+history is not that infinite complex. The paper distinguishes spatial depth m
+from physical evolution time t; our execution index must not be identified
+with either a measured physical time or a derived physical distance.
 
-Isotropy and three-dimensional display therefore cannot be counted as discoveries of this experiment. Their numerical implementation can be checked. Other properties of the event structure and its observables may still be research outputs.
+## Observer convention and relational layer
 
-### Correcting radial sparsity
+Four levels remain separate:
 
-A fixed number of radial axes spread across Euclidean shells with area `4πr²`.
-Their apparent sparsity is an embedding artifact. TEF does not currently claim
-that space density falls as `1/r²`; visual gaps between spines cannot establish
-such a law.
+```text
+source / causal record
+    → intrinsic relational representation (sourceId, depth, trajectoryLabel)
+    → observer mapping
+    → camera projection and rendering
+```
+
+The lightweight relational adapter identifies existing states and their causal
+parents, with no Euclidean coordinates. Transverse relations are explicitly
+unspecified. There is no K_perp adjacency, transport map, cell measure, or
+intrinsic distance implementation in Experiment 0001.
+
+**Intrinsic Untwisted** (`intrinsic-untwisted`, default) schematically represents
+rollout depth × transverse organization with fixed transverse observer offsets
+and parallel axes. This is a depiction motivated by intrinsic relabeling, not a
+claim of physical parallel helices in Cartesian space. Retained helical phase
+and handedness are compatible with untwisting not erasing connection data.
+
+**Radial Observer** (`radial-observer`) retains the intuitive source-centered
+Euclidean embedding with Fibonacci directions. It is not intrinsic metric
+reconstruction. The display spine radius is constant with depth; the previous
+expanding envelope is removed. A screen-space **Display thickness** control
+changes only stroke width. Both views preserve the same causal state and are
+alternative observer mappings, not competing TEF models.
+
+### Helices, transverse relations, and apparent sparsity
 
 A spacetime helix in the emulator should not be read as an isolated
 one-dimensional filament embedded in pre-existing three-dimensional space.
-The rendered helix is an observer representation of rollout structure;
-spatial dimensionality and local adjacency remain separate questions for
-later experiments. Centerlines are provisionally rollout generators / phase
-spines, rather than the entire spatial volume.
+The rendered helix is an observer representation of source-local rollout
+structure. Centerlines are provisional rollout generators, trajectory
+representatives, or phase spines; they need not represent the complete local
+spatial volume.
 
-`parallel-rollout` uses constant transverse port placement and parallel local
-axes. `radial-expanding` retains Fibonacci directions and adds a bounded,
-source-tapered visual radius envelope based on `R0 + kr`. Both render the same
-recorded phase with the same handedness. The [observer specification](../../viewer/README.md)
-defines the exact formulas, caps, interpolation, and display sampling.
-These are alternative observer mappings, not competing physical models.
-No display coordinate, radius, or direction enters the engine. The existing
-phase period remains a run parameter; geometry controls only redraw the view.
+A finite set of radial axes spreads over Euclidean shells with observer area
+`4πr²`. Apparent dilution is an embedding artifact, not a TEF prediction that
+intrinsic space density falls as `1/r²`. Visual gaps between spines do not
+measure physical density. Constant parallel spacing also does not prove an
+intrinsic spatial dimension.
 
-This issue motivates a future experiment on intrinsic dimensionality and
-neighborhood structure. That experiment, and any new adjacency or transverse
-interaction rule it might need, are outside this revision.
+Keep three transverse notions separate: the normal plane perpendicular to one
+helix's local tangent; K_perp organizing relations among trajectory labels;
+and the observer's Euclidean grid / drawing plane. In particular, K_perp is not
+an observer XY plane. Our axis-orthogonal drawing basis is not generally the
+Frenet normal basis of a helix and does not implement its intrinsic transport.
 
-## Two complementary records
-
-The causal record contains source-state versions, newly available structural states, connections, local rule applications, and their dependencies. It has no primitive global position or timestamp measured in seconds.
-
-The observer record maps a selected part of that history into a three-dimensional display. Any mapping from causal depth or source cycles to display radius must be named and versioned. Changing display layout must not change the causal record or transfer bookkeeping.
-
-An outward-looking animation alone establishes no physical growth law. A graph that branches outward also does not automatically have three-dimensional spatial geometry. Establishing a physical distance or dimension requires an operational construction and tests beyond the display convention.
+The [observer specification](../../viewer/README.md) records exact placement,
+phase interpolation, fixed display radii, screen-space thickness, and sampling.
+Physical helix R and q from the paper are not currently state fields. The
+existing visual radius control and camera pitch must not be reinterpreted as
+them. No metric, radial expansion law, branching, or lateral interaction has
+been introduced by this revision.
 
 ## Event-level scaffold
 
@@ -126,4 +160,16 @@ Run `python3 python/compare.py` with 256 channels, 32,768 updates, 32 updates pe
 
 These measured reference values expose an algorithmic effect: balanced scheduling selects equal-depth frontiers, whereas random interleaving selects unequal depths and therefore different phases under the assumed phase rule. The phase coherence difference is not evidence of physical decoherence. At equal per-channel depths the local states agree, independent of interleaving; the Rust commutation test checks this property.
 
-This reference does not yet measure angular quadrature error, define a physical density, or infer a dimension from graph structure. It provides a reproducible baseline against which future interaction and transfer rules can be compared.
+This reference does not yet measure angular quadrature error, define a physical density, or numerically test the paper's conditional relational dimension construction. It provides a reproducible baseline against which future interaction and transfer rules can be compared.
+
+
+## Deferred experiment: intrinsic rollout adjacency
+
+**Experiment 0002 — Intrinsic Rollout Adjacency** is a proposed next investigation:
+explicit transverse adjacency on K_perp → transported sections along spatial
+rollout depth → intrinsic graph/cell-complex distance → ball-volume growth
+`|B(r)| ~ r³` (or the paper's weighted-measure counterpart).
+
+It would test a specified relational construction and its assumptions, keeping
+intrinsic distances separate from observer embeddings. No Experiment 0002 code,
+transverse transport, or new adjacency is implemented in this revision.

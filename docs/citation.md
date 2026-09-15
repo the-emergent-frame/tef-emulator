@@ -11,7 +11,7 @@ artifact and its provenance, not evidence that its physical model is validated.
 - For results produced using the emulator, also cite the software release used.
   Prefer its version-specific Zenodo DOI; for an unarchived development build,
   identify the repository and exact commit.
-- Listing seven papers as background does not ask users to cite all seven.
+- Listing eight papers as background does not ask users to cite all eight.
   Select the papers relevant to the method or claim being discussed.
 
 Keep the software as the root citation in `CITATION.cff`. Do not set a
@@ -28,11 +28,14 @@ citation guidance if a dedicated software or results paper is published.
 | `rules/<version>/README.md` | Exact paper sections or equations used by a rule; explicit separation of inherited assumptions, new hypotheses, and numerical choices |
 | Experiment specification and run artifact | Question, rule version, engine commit, configuration, controls, observations, and limitations |
 
-The seven papers are retained as the framework bibliography. Each CFF reference
+The eight papers are retained as the framework bibliography. Each CFF reference
 has a `scope` explaining its current relationship to the software. Papers IV,
 VI, and VII supply the immediate matter/space-interface and rollout context;
-Papers I, II, III, and V are broader framework background. The current kernel
-does not implement the seven papers' quantitative constructions. Its independent
+Paper VIII v3.12 is the canonical conceptual reference for the intrinsic relational
+representation and current observer terminology. Its conditional K_perp / product
+construction is not numerically implemented. Papers I, II, III, and V are broader
+framework background. The current kernel
+does not implement the eight papers' quantitative constructions. Its independent
 channels, transfer weight, and phase increment remain candidate scaffold rules.
 
 ## Updating the records

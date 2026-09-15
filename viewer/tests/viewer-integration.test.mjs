@@ -66,22 +66,25 @@ function savePreview(name){
 
 test('real app wiring preserves replay and causal data through both mappings and export/import', async()=>{
   assert.equal(el('error').textContent,'');
-  assert.equal(el('mapping-mode').value,'parallel-rollout');
+  assert.equal(el('mapping-mode').value,'intrinsic-untwisted');
   el('timeline').value=run.config.events+1;await el('timeline').fire('input');draw();
-  assert.ok(calls.filter(c=>c.path).length>1000);savePreview('parallel-rollout');
+  assert.ok(calls.filter(c=>c.path).length>1000);savePreview('intrinsic-untwisted');
   const before=await exportRecord();delete before.observer;
   const diagnostics=['cursor','max-depth','weight','spread','coherence'].map(id=>el(id).textContent);
-  el('mapping-mode').value='radial-expanding';await el('mapping-mode').fire('input');
+  el('mapping-mode').value='radial-observer';await el('mapping-mode').fire('input');
   el('base-radius').value='.04';await el('base-radius').fire('input');
-  el('radial-expansion').value='.12';await el('radial-expansion').fire('input');draw();assert.ok(calls.filter(c=>c.path).length>1000);savePreview('radial-expanding');
-  assert.equal(el('expansion-control').hidden,false);
+  el('display-thickness').value='2';await el('display-thickness').fire('input');draw();assert.ok(calls.filter(c=>c.path).length>1000);savePreview('radial-observer');
+  assert.match(el('mapping-description').textContent,/Euclidean point-source/);
+  assert.equal(el('thickness-value').textContent,'2.00 px');
+  assert.ok(calls.some(c=>c.path && c.width===2));
   assert.deepEqual(['cursor','max-depth','weight','spread','coherence'].map(id=>el(id).textContent),diagnostics);
   assert.equal(requests.filter(x=>x.url==='/api/run').length,1);
-  const saved=await exportRecord();assert.equal(saved.observer.mode,'radial-expanding');assert.equal(saved.observer.baseRadius,.04);
+  const saved=await exportRecord();assert.equal(saved.observer.mode,'radial-observer');assert.equal(saved.observer.spineRadius,.04);assert.equal(saved.observer.displayThickness,2);
+  assert.ok(!('expansion' in saved.observer));
   const causal={...saved};delete causal.observer;assert.deepEqual(causal,before);
-  el('mapping-mode').value='parallel-rollout';await el('mapping-mode').fire('input');
+  el('mapping-mode').value='intrinsic-untwisted';await el('mapping-mode').fire('input');
   el('import-file').files=[{size:JSON.stringify(saved).length,text:async()=>JSON.stringify(saved)}];await el('import-file').fire('change');
-  assert.equal(el('mapping-mode').value,'radial-expanding');assert.equal(el('base-radius').value,.04);
+  assert.equal(el('mapping-mode').value,'radial-observer');assert.equal(el('base-radius').value,.04);
   assert.equal(el('cursor').textContent,'32,769');
   await el('view-causal').fire('click');draw();assert.equal(el('observer-controls').hidden,true);
   await el('reset').fire('click');draw();assert.equal(el('source-count').textContent,'0');
@@ -99,4 +102,20 @@ test('real app draws the maximum run without unbounded geometry and handles a bi
   run=fixture(4,0);
   el('import-file').files=[{size:1000,text:async()=>JSON.stringify(run)}];await el('import-file').fire('change');draw();
   assert.equal(el('max-depth').textContent,'0');assert.equal(el('weight').textContent,'1.000000');
+});
+
+
+test('legacy app import reports migration, preserves record and camera, and drops geometric expansion', async()=>{
+  const legacy=fixture(17,111);
+  legacy.observer={mapping:'rollout-observer-v0.2',mode:'radial-expanding',baseRadius:.06,expansion:.25,cursor:43,yaw:.8,pitch:-.2,zoom:1.5};
+  el('import-file').files=[{size:20000,text:async()=>JSON.stringify(legacy)}];await el('import-file').fire('change');draw();
+  assert.equal(el('mapping-mode').value,'radial-observer');
+  assert.equal(el('cursor').textContent,'43');
+  assert.equal(el('observer-migration').hidden,false);
+  assert.match(el('observer-migration').textContent,/expansion removed/);
+  const saved=await exportRecord();
+  assert.equal(saved.observer.mapping,'rollout-observer-v0.3');
+  assert.equal(saved.observer.spineRadius,.06);assert.equal(saved.observer.displayThickness,1.05);
+  assert.equal(saved.observer.yaw,.8);assert.equal(saved.observer.pitch,-.2);assert.equal(saved.observer.zoom,1.5);
+  delete saved.observer;delete legacy.observer;assert.deepEqual(saved,legacy);
 });

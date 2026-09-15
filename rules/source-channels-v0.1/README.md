@@ -42,20 +42,27 @@ Applying independent updates in another order commutes up to event-id relabeling
 
 Stop after the configured number of rollout events. Birth is stored separately and adds one event to the observer timeline. Bounds: `4 ≤ N ≤ 2048`, `0 ≤ events ≤ 200000`, `2 ≤ K ≤ 4096`, and an unsigned 32-bit seed. Counts and dependencies are integers; diagnostic phases and weights use 64-bit floats. No coarse-graining occurs in the engine.
 
-## Observer mappings (separate from rule version)
+## Intrinsic representation and observer mappings
 
-The default `parallel-rollout` and optional `radial-expanding` mappings are
-specified in the [observer documentation](../../viewer/README.md). Their mapping
-version is `rollout-observer-v0.2`; the causal rule remains `source-channels-v0.1`.
-They use the existing local phase to render disposable phase spines. Radius,
-expansion, grids, Fibonacci directions, and smooth interpolation have no role
-in this transition law. Apparent radial sparsity is not a physical density law.
+[Paper VIII v3.12](https://doi.org/10.5281/zenodo.22776137), particularly **Exact
+product theorem** (`eq:product`) and **Cubic volume growth** (`eq:df3`), supplies
+the current conditional relational motivation. Its K_perp construction,
+incidence/measure transport, and uniform growth assumptions are not implemented
+by this independent-channel rule. No paper equation becomes a new transition.
 
-Earlier `fibonacci-depth-v0.1` records used equal-area latitude bands with a
-golden-angle azimuth and display radius `depth/max(1, final_max_depth)`; histories
-were shown as sampled points on rays. That was also an observer convention.
-Legacy imports keep their causal record and radial intent, using the current
-spine geometry as described in the compatibility note.
+A read-only adapter exposes source-local `(depth, trajectoryLabel)` identities
+and existing event/parent records. Transverse relations remain unspecified.
+Then `intrinsic-untwisted` or `radial-observer` assigns disposable geometry; see
+[observer formulas and migration](../../viewer/README.md). This four-level flow
+separates causal state, relational representation, observer mapping, and rendering.
+K_perp, a local helix normal plane, and observer transverse placement are distinct.
+
+The observer version is `rollout-observer-v0.3`; the causal rule remains
+`source-channels-v0.1`. Local phase, weight, activation, scheduling, and parent
+semantics are unchanged. Intrinsic helix R/q are not implemented by the visual
+spine radius or phase period. Current observer radii are constant with depth,
+and display thickness affects pixels only. Older observer histories retain
+their causal data but are explicitly migrated to the new representation.
 
 ## Observables and rejection checks
 

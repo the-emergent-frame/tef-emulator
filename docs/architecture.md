@@ -8,7 +8,7 @@ Build a computational laboratory for candidate TEF rules. Start with a single re
 
 The intended first investigations concern structural growth, candidate source-to-structure transfer, propagation, phase correlations, and the behavior of coarse-grained observables.
 
-[Experiment 0001](../experiments/0001-single-source-rollout/README.md) specializes this direction to a supplied source-birth boundary with a hydrogen interpretation and parallel and radial expanding observer representations. The observer convention is an explicit input; pre-rollout volume and direction are not assumed. Internal source formation and physical transfer rules remain to be specified.
+[Experiment 0001](../experiments/0001-single-source-rollout/README.md) specializes this direction to a supplied source-birth boundary with a hydrogen interpretation and intrinsic-untwisted and radial observer representations. The observer convention is an explicit input; pre-rollout volume and direction are not assumed. Internal source formation and physical transfer rules remain to be specified.
 
 ## Computational objects
 
@@ -19,6 +19,7 @@ The intended first investigations concern structural growth, candidate source-to
 | Active state boundary | Valid state versions available for further events | A scheduling frontier is not a preferred physical simultaneity surface |
 | Causal history | Dependencies between events that produce and use state versions | A causal partial order alone does not establish a spacetime metric |
 | Source boundary | Replaceable output, input, and feedback rules | No internal matter topology or energy reservoir is derived by introducing this interface |
+| Intrinsic relational representation | Read-only source, trajectory, depth, and parent labels; transverse relations unspecified | Does not implement K_perp, an intrinsic metric, or spatial dimensionality |
 | Observer | Measurement and coarse-graining of model records | Display coordinates and animation speed do not feed back into evolution |
 
 ## Events and states
@@ -37,7 +38,14 @@ Rust owns the core state representation, rule application, dependency tracking, 
 
 The reference stores independent channels in vectors. Introduce general graph storage such as petgraph when topology-changing rules require it. If rules require hyperedges, preserve their incidence structure and port ordering explicitly. Do not identify a hypergraph with an ordinary pairwise graph without recording the encoding.
 
-The implemented observer uses JavaScript/Canvas after a disposable `ObserverMapping` layer with parallel and radial expanding implementations. Observer parameters are exported separately and never written into causal state. Rerun remains an integration candidate; its sequence indices can represent execution records. Physical clocks, if later defined, are separately named model observables.
+The implemented observer uses JavaScript/Canvas after a lightweight intrinsic relational adapter and a disposable `ObserverMapping` layer with `IntrinsicUntwistedMapping` and `RadialObserverMapping` implementations. The adapter preserves source-local trajectory identity and parent relations without assigning XYZ coordinates; K_perp relations remain unspecified. Observer parameters are exported separately and never written into causal state. Rerun remains an integration candidate; its sequence indices can represent execution records. Physical clocks, if later defined, are separately named model observables.
+
+The four-level data flow is `causal record → intrinsic relational representation
+→ observer mapping → renderer`. Paper VIII v3.12's transported-complex product
+and conditional volume-growth theorem motivate the representation; neither the
+adapter nor the grid layout implements that theorem. See [Experiment 0001](../experiments/0001-single-source-rollout/README.md)
+and the [observer formulas](../viewer/README.md). Local helix normal fibers,
+transverse relational organization, and observer placement are distinct.
 
 ## Source model
 
@@ -71,6 +79,19 @@ Keep small reference fixtures in Git. Large event logs, checkpoints, and recordi
 6. Introduce a validated coarse-graining method for a specific observable.
 
 Stable matter, physical spacetime geometry, and quantum behavior are research targets, not completed features of this baseline.
+
+## Deferred research directions
+
+- **Experiment 0002 — Intrinsic Rollout Adjacency:** specify K_perp, transported
+  sections, intrinsic distance, and ball-volume growth under the assumptions of
+  [Paper VIII v3.12](https://doi.org/10.5281/zenodo.22776137).
+- **Experiment 0003 — Diffusion on Rollout Geometry:** later examine random walks,
+  heat-kernel scaling, walk dimension, and Green functions. The paper's `d_w=2`
+  and `G(r) ≍ 1/r` results require additional analytic regularity and an infinite
+  homogeneous bulk (finite-source boundaries need separate treatment).
+
+These are roadmap entries, with no adjacency, diffusion, Green-function, or
+excitation implementation in the observer revision.
 
 ## Reference implementations
 

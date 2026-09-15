@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 from tef_emulator import ROOT, RunConfig, build_engine, run_experiment, verify_run
 
 PUBLIC = ROOT / "viewer" / "public"
-ROUTES = {"/observer-mapping.mjs": ("observer-mapping.mjs", "text/javascript"), "/": ("index.html", "text/html"), "/app.js": ("app.js", "text/javascript"), "/styles.css": ("styles.css", "text/css")}
+ROUTES = {"/intrinsic-representation.mjs": ("intrinsic-representation.mjs", "text/javascript"), "/observer-mapping.mjs": ("observer-mapping.mjs", "text/javascript"), "/": ("index.html", "text/html"), "/app.js": ("app.js", "text/javascript"), "/styles.css": ("styles.css", "text/css")}
 RUN_LOCK = threading.Lock()
 
 
